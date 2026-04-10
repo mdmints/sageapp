@@ -616,7 +616,7 @@
   }
 
   .compare-scroll-row {
-    @apply flex gap-3 overflow-x-auto px-4 pb-[2px];
+    @apply flex overflow-x-auto px-4 pb-[2px];
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
@@ -660,7 +660,9 @@
   }
 
   .compare-card {
-    @apply min-w-[180px] rounded-[var(--r-lg)] border px-[14px] py-3 text-left;
+    @apply shrink-0 rounded-[var(--r-lg)] border px-[14px] py-3 text-left;
+    width: 160px;
+    margin-right: 12px;
     background: var(--card);
     border-color: var(--border);
     transition: transform .12s ease, background-color .15s ease, border-color .15s ease;
@@ -671,10 +673,6 @@
   .compare-card:hover {
     background: var(--card-hover);
     border-color: var(--rose-border);
-  }
-
-  .compare-card-last {
-    margin-right: 16px;
   }
 
   .compare-card-title {

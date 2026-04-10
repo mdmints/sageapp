@@ -3,71 +3,121 @@ import { useNavigate } from 'react-router-dom';
 import type { CompareOption } from '../../types';
 import { Pill } from '../ui/Pill';
 
+const CARD_WIDTH = 160;
+const CARD_GAP = 12;
+const SNAP_INTERVAL = CARD_WIDTH + CARD_GAP;
+const SCROLL_SETTLE_MS = 90;
+
 export function CompareRow({ items }: { items: CompareOption[] }) {
   const navigate = useNavigate();
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const scrollTimeoutRef = useRef<number | null>(null);
+  const isSnappingRef = useRef(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current !== null) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    setCurrentIndex((current) => Math.max(0, Math.min(items.length - 1, current)));
+  }, [items.length]);
 
   if (!items.length) {
     return null;
   }
 
-  useEffect(() => {
-    const container = scrollRef.current;
+  function getNearestIndex(offset: number) {
+    const nextIndex = Math.round(offset / SNAP_INTERVAL);
+    return Math.max(0, Math.min(items.length - 1, nextIndex));
+  }
+
+  function snapToNearest() {
+    const container = listRef.current;
 
     if (!container) {
       return;
     }
 
-    function updateScrollState() {
-      const activeContainer = scrollRef.current;
+    const nearestIndex = getNearestIndex(container.scrollLeft);
+    const targetOffset = nearestIndex * SNAP_INTERVAL;
+    const distance = Math.abs(container.scrollLeft - targetOffset);
 
-      if (!activeContainer) {
-        return;
-      }
+    setCurrentIndex(nearestIndex);
 
-      const firstCard = activeContainer.querySelector<HTMLElement>('.compare-card');
-      const scrollStep = firstCard ? firstCard.offsetWidth + 12 : activeContainer.clientWidth;
-      const nextIndex = Math.round(activeContainer.scrollLeft / scrollStep);
-
-      setActiveIndex(Math.max(0, Math.min(items.length - 1, nextIndex)));
-    }
-
-    updateScrollState();
-    container.addEventListener('scroll', updateScrollState, { passive: true });
-    window.addEventListener('resize', updateScrollState);
-
-    return () => {
-      container.removeEventListener('scroll', updateScrollState);
-      window.removeEventListener('resize', updateScrollState);
-    };
-  }, [items]);
-
-  function scrollByDirection(direction: 'back' | 'forward') {
-    const container = scrollRef.current;
-
-    if (!container) {
+    if (distance < 2) {
+      isSnappingRef.current = false;
       return;
     }
 
-    const firstCard = container.querySelector<HTMLElement>('.compare-card');
-    const scrollStep = firstCard ? firstCard.offsetWidth + 12 : container.clientWidth;
-
-    container.scrollBy({
-      left: direction === 'forward' ? scrollStep : -scrollStep,
+    isSnappingRef.current = true;
+    container.scrollTo({
+      left: targetOffset,
       behavior: 'smooth',
     });
+
+    window.setTimeout(() => {
+      isSnappingRef.current = false;
+    }, 180);
+  }
+
+  function handleScroll() {
+    if (isSnappingRef.current) {
+      return;
+    }
+
+    const container = listRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    setCurrentIndex(getNearestIndex(container.scrollLeft));
+
+    if (scrollTimeoutRef.current !== null) {
+      window.clearTimeout(scrollTimeoutRef.current);
+    }
+
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      snapToNearest();
+    }, SCROLL_SETTLE_MS);
+  }
+
+  function scrollToIndex(nextIndex: number) {
+    const container = listRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const boundedIndex = Math.max(0, Math.min(items.length - 1, nextIndex));
+
+    isSnappingRef.current = true;
+    container.scrollTo({
+      left: boundedIndex * SNAP_INTERVAL,
+      behavior: 'smooth',
+    });
+
+    setCurrentIndex(boundedIndex);
+
+    window.setTimeout(() => {
+      isSnappingRef.current = false;
+    }, 180);
   }
 
   return (
     <div className="mb-4">
       <div className="result-meta-label">Compare</div>
       <div className="compare-carousel">
-        {activeIndex > 0 ? (
+        {currentIndex > 0 ? (
           <button
             aria-label="Show previous comparisons"
             className="compare-carousel-button compare-carousel-button-back"
-            onClick={() => scrollByDirection('back')}
+            onClick={() => scrollToIndex(currentIndex - 1)}
             type="button"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -81,10 +131,11 @@ export function CompareRow({ items }: { items: CompareOption[] }) {
             </svg>
           </button>
         ) : null}
-        <div className="compare-scroll-row" ref={scrollRef}>
-          {items.map((item, index) => (
+
+        <div className="compare-scroll-row" onScroll={handleScroll} ref={listRef}>
+          {items.map((item) => (
             <button
-              className={`compare-card ${index === items.length - 1 ? 'compare-card-last' : ''}`}
+              className="compare-card"
               key={`${item.query}-${item.title}`}
               onClick={() => navigate('/search/loading', { state: { query: item.query } })}
               type="button"
@@ -99,11 +150,12 @@ export function CompareRow({ items }: { items: CompareOption[] }) {
             </button>
           ))}
         </div>
-        {activeIndex < items.length - 1 ? (
+
+        {currentIndex < items.length - 1 ? (
           <button
             aria-label="Show more comparisons"
             className="compare-carousel-button compare-carousel-button-next"
-            onClick={() => scrollByDirection('forward')}
+            onClick={() => scrollToIndex(currentIndex + 1)}
             type="button"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -118,11 +170,12 @@ export function CompareRow({ items }: { items: CompareOption[] }) {
           </button>
         ) : null}
       </div>
+
       <div className="compare-dots" aria-label="Compare scroll position">
         {items.map((item, index) => (
           <div
             aria-hidden="true"
-            className={`compare-dot ${index === activeIndex ? 'is-active' : ''}`}
+            className={`compare-dot ${index === currentIndex ? 'is-active' : ''}`}
             key={`${item.query}-${index}`}
           />
         ))}
