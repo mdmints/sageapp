@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+  <rect width="80" height="80" rx="16" fill="#F6EFE8"/>
+  <rect x="28" y="14" width="24" height="10" rx="4" fill="#D6C1B1"/>
+  <rect x="23" y="22" width="34" height="42" rx="11" fill="#FFF" stroke="#E8D9CE" stroke-width="2"/>
+  <rect x="28" y="31" width="24" height="16" rx="6" fill="#7B9E87"/>
+  <circle cx="34" cy="39" r="3" fill="#EAF4EC"/>
+  <circle cx="46" cy="39" r="3" fill="#EAF4EC"/>
+  <text x="40" y="56" text-anchor="middle" fill="#9E8576" font-size="6" font-family="Arial, sans-serif">PROBIOTIC</text>
+</svg>

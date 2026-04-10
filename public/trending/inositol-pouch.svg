@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+  <rect width="80" height="80" rx="16" fill="#FAF1EE"/>
+  <rect x="20" y="12" width="40" height="56" rx="8" fill="#FFF" stroke="#E9D8D3" stroke-width="2"/>
+  <rect x="26" y="18" width="28" height="10" rx="5" fill="#F3D5DA"/>
+  <rect x="28" y="34" width="24" height="18" rx="4" fill="#C85B6E"/>
+  <path d="M35 42C35 38.686 37.686 36 41 36H45V52H41C37.686 52 35 49.314 35 46V42Z" fill="#FFF4F5"/>
+  <text x="40" y="61" text-anchor="middle" fill="#A46C61" font-size="6" font-family="Arial, sans-serif">INOSITOL</text>
+</svg>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sage — Evidence-Based Women's Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:#C85B6E; --rose2:#a8394c; --rose-bg:#fdecea; --rose-border:#f5cdd3;
+  --amber:#C97B3A; --amber-bg:#fdf3e7; --amber-border:#f5d9b0;
+  --green:#3d7a4a; --green-bg:#eaf4ec; --green-border:#b8dfc0;
+  --sage:#7B9E87; --sage-bg:#eef5f1;
+  --bg:#FAF8F6; --bg2:#f3ede8; --bg3:#ece4dc;
+  --card:#ffffff;
+  --border:#EDE5DF; --border2:#ddd4cc;
+  --text:#2A1F1A; --text2:#6b4c40; --text3:#a08880; --text4:#c8b0a8;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --body:'Outfit',sans-serif;
+  --r-sm:10px; --r-md:14px; --r-lg:18px; --r-xl:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--body);background:#e8e0d8;display:flex;align-items:center;justify-content:center;}
+
+/* ── SHELL ── */
+.shell{width:390px;height:844px;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden;border-radius:48px;box-shadow:0 32px 80px rgba(0,0,0,.22),0 0 0 1.5px rgba(0,0,0,.1);}
+
+/* ── SCREENS ── */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;animation:fadeUp .22s ease;}
+.screen.active{display:flex;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── TOPBAR ── */
+.topbar{padding:52px 22px 14px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);position:relative;z-index:5;flex-shrink:0;}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--border);}
+.logo{display:flex;align-items:center;gap:8px;}
+.logomark{width:30px;height:30px;border-radius:9px;background:var(--rose);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-.02em;}
+.logoname{font-family:var(--display);font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.02em;}
+.beta{font-size:9px;font-weight:600;background:var(--rose-bg);color:var(--rose);padding:2px 6px;border-radius:4px;letter-spacing:.06em;}
+
+/* ── SCROLL ── */
+.scroll{flex:1;overflow-y:auto;padding:20px 22px 110px;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:absolute;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:12px 0 30px;z-index:100;}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:2px 16px;}
+.ni svg{transition:transform .15s;}
+.ni:active svg{transform:scale(.9);}
+.ni-label{font-size:10px;font-weight:400;color:var(--text3);}
+.ni.on .ni-label{color:var(--rose);font-weight:500;}
+
+/* ── TYPE ── */
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);margin-bottom:5px;}
+.display{font-family:var(--display);font-size:30px;font-weight:600;color:var(--text);letter-spacing:-.02em;line-height:1.1;margin-bottom:8px;}
+.display em{font-style:italic;color:var(--rose);}
+.title{font-size:15px;font-weight:600;color:var(--text);}
+.subtitle{font-size:13px;font-weight:400;color:var(--text2);line-height:1.6;}
+.micro{font-size:11px;color:var(--text3);}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;}
+.card-rose{background:var(--rose-bg);border:1px solid var(--rose-border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;}
+.card-amber{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;}
+.card-green{background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;}
+.card-sage{background:var(--sage-bg);border:1px solid #cce0d4;border-radius:var(--r-lg);padding:14px 16px;margin-bottom:10px;}
+
+/* ── PILLS ── */
+.pill{display:inline-flex;align-items:center;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:500;line-height:1;}
+.p-green{background:var(--green-bg);color:#1b5e20;}
+.p-amber{background:var(--amber-bg);color:#7f4400;}
+.p-rose{background:var(--rose-bg);color:#7a1a2e;}
+.p-sage{background:var(--sage-bg);color:#1a4a32;}
+.p-outline{background:transparent;border:1px solid var(--border2);color:var(--text2);}
+
+/* ── SEARCH ── */
+.searchbar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:11px 12px;display:flex;align-items:center;gap:8px;margin-bottom:10px;transition:border-color .15s;}
+.searchbar:focus-within{border-color:var(--rose);}
+.searchbar input{flex:1;border:none;outline:none;background:transparent;font-family:var(--body);font-size:13px;color:var(--text);}
+.searchbar input::placeholder{color:var(--text4);}
+.sbtn{width:32px;height:32px;border-radius:9px;background:var(--rose);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .15s;}
+.sbtn:hover{background:var(--rose2);}
+.sbtn:active{transform:scale(.94);}
+
+/* ── HINTS ── */
+.hints{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.hint{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s;}
+.hint:hover{border-color:var(--rose);background:var(--rose-bg);}
+
+/* ── TREND CARDS ── */
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:13px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s,transform .1s;}
+.tcard:hover{border-color:var(--rose-border);}
+.tcard:active{transform:scale(.98);}
+.ticon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+
+/* ── DECODER ENTRY ── */
+.dbanner{background:var(--rose-bg);border:1px solid var(--rose-border);border-radius:var(--r-lg);padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-top:4px;transition:background .15s;}
+.dbanner:hover{background:#f9d8de;}
+.dbanner:active{transform:scale(.98);}
+
+/* ── LOADING ── */
+.loading-wrap{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 30px;text-align:center;}
+.loading-wrap.active{display:flex;}
+.spinner{width:44px;height:44px;border:3px solid var(--rose-bg);border-top-color:var(--rose);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:22px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.lstep{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text3);opacity:.35;transition:opacity .4s,color .4s;padding:5px 0;}
+.lstep.on{opacity:1;color:var(--rose);}
+.lstep.done{opacity:.7;color:var(--green);}
+.lstep-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+/* ── RESULT ── */
+.score-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.verdict-name{font-family:var(--display);font-size:19px;font-weight:600;color:var(--rose);margin-bottom:3px;line-height:1.2;}
+.conf-row{display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+.cdot{width:8px;height:8px;border-radius:50%;}
+.barrow{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.barlbl{font-size:11px;color:var(--text3);width:115px;flex-shrink:0;}
+.bartrack{flex:1;height:5px;background:#f0e6e4;border-radius:4px;overflow:hidden;}
+.barfill{height:100%;border-radius:4px;transition:width .7s cubic-bezier(.4,0,.2,1);}
+.barval{font-size:11px;width:24px;text-align:right;}
+.bul{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;}
+.buldot{width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;margin-top:5px;}
+.bultext{font-size:12px;color:var(--text2);line-height:1.55;}
+
+/* ── CLAIM INPUT ── */
+.claim-wrap{background:var(--card);border:1.5px dashed var(--border2);border-radius:var(--r-lg);padding:13px 14px;display:flex;gap:10px;margin-bottom:12px;transition:border-color .15s;}
+.claim-wrap:focus-within{border-color:var(--rose);border-style:solid;}
+.claim-ta{flex:1;border:none;outline:none;resize:none;background:transparent;font-family:var(--body);font-size:12px;color:var(--text);font-style:italic;line-height:1.6;min-height:52px;}
+.claim-ta::placeholder{color:var(--text4);}
+
+/* ── HUB ── */
+.hub-header{padding:22px 22px 0;}
+.avatar-ring{width:64px;height:64px;border-radius:50%;border:2px solid var(--rose-border);display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--rose-bg);margin-bottom:12px;}
+.profile-name{font-family:var(--display);font-size:24px;font-weight:600;color:var(--text);letter-spacing:-.02em;}
+.profile-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;margin-bottom:4px;}
+
+.hub-section{padding:0 22px;margin-bottom:4px;}
+.hub-section-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.hub-section-title span{font-size:11px;font-weight:400;color:var(--rose);cursor:pointer;}
+
+/* ── CONNECT CARD (wearables etc) ── */
+.connect-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.connect-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.connect-info{flex:1;min-width:0;}
+.connect-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:1px;}
+.connect-sub{font-size:11px;color:var(--text3);}
+.connect-btn{font-size:10px;font-weight:600;padding:5px 11px;border-radius:8px;border:1.5px solid var(--rose);color:var(--rose);background:transparent;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.connect-btn.connected{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+.connect-btn:hover{background:var(--rose-bg);}
+.connect-btn.connected:hover{background:var(--green-bg);}
+
+/* ── SAVED ITEM ── */
+.saved-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s;}
+.saved-item:hover{border-color:var(--rose-border);}
+.saved-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.saved-info{flex:1;min-width:0;}
+.saved-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.saved-meta{font-size:11px;color:var(--text3);}
+.remove-btn{width:26px;height:26px;border-radius:50%;background:var(--bg2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:14px;line-height:1;flex-shrink:0;}
+.remove-btn:hover{background:var(--rose-bg);color:var(--rose);}
+
+/* ── ONBOARDING MODAL ── */
+.modal-bg{position:absolute;inset:0;background:rgba(42,31,26,.5);z-index:200;display:flex;align-items:flex-end;border-radius:48px;overflow:hidden;}
+.modal-sheet{background:var(--bg);border-radius:28px 28px 0 0;padding:24px 24px 40px;width:100%;animation:slideUp .28s cubic-bezier(.4,0,.2,1);}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 20px;}
+.progress-bar{display:flex;gap:4px;margin-bottom:20px;}
+.pstep{flex:1;height:3px;border-radius:2px;background:var(--border);}
+.pstep.done{background:var(--rose);}
+
+.ob-option{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-md);padding:11px 13px;display:flex;align-items:center;gap:11px;cursor:pointer;margin-bottom:8px;transition:all .15s;}
+.ob-option:hover,.ob-option.sel{border-color:var(--rose);background:var(--rose-bg);}
+.ob-option-icon{font-size:18px;width:32px;text-align:center;flex-shrink:0;}
+.ob-option-text{flex:1;}
+.ob-option-title{font-size:13px;font-weight:500;color:var(--text);}
+.ob-option-sub{font-size:11px;color:var(--text3);}
+.ob-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.ob-option.sel .ob-check{background:var(--rose);border-color:var(--rose);}
+
+.btn-primary{width:100%;background:var(--rose);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;letter-spacing:.01em;}
+.btn-primary:hover{background:var(--rose2);}
+.btn-primary:active{transform:scale(.98);}
+.btn-ghost{width:100%;background:transparent;color:var(--rose);border:1.5px solid var(--rose);border-radius:var(--r-md);padding:13px;font-family:var(--body);font-size:13px;font-weight:500;cursor:pointer;margin-top:8px;transition:background .15s;}
+.btn-ghost:hover{background:var(--rose-bg);}
+.btn-text{background:none;border:none;color:var(--text3);font-family:var(--body);font-size:12px;cursor:pointer;padding:10px 0;width:100%;text-align:center;}
+
+/* ── PROVIDER EXPORT ── */
+.export-row{display:flex;gap:8px;margin-top:6px;}
+.export-btn{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:11px 10px;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.export-btn:hover{border-color:var(--rose);color:var(--rose);background:var(--rose-bg);}
+.export-btn-icon{font-size:18px;}
+
+/* ── BACK ── */
+.back{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--rose);font-weight:500;cursor:pointer;margin-bottom:14px;}
+
+/* ── DIVIDER ── */
+.divl{border:none;border-top:1px solid var(--border);margin:14px 0;}
+
+/* ── TOAST ── */
+.toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;font-size:12px;padding:8px 18px;border-radius:20px;opacity:0;transition:all .28s ease;pointer-events:none;white-space:nowrap;z-index:300;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── SECTION DIVIDER WITH LABEL ── */
+.sdiv{display:flex;align-items:center;gap:10px;margin:16px 0 12px;}
+.sdiv-line{flex:1;height:1px;background:var(--border);}
+.sdiv-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text4);}
+
+/* ── PERSONALIZED BADGE ── */
+.for-you-badge{display:inline-flex;align-items:center;gap:5px;background:var(--rose-bg);border:1px solid var(--rose-border);border-radius:20px;padding:3px 9px;font-size:10px;font-weight:500;color:var(--rose);margin-bottom:8px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:36px 20px;}
+.empty-icon{width:56px;height:56px;border-radius:16px;background:var(--rose-bg);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ══════════════════════ SCREEN: HOME ══════════════════════ -->
+<div id="s-home" class="screen active">
+  <div class="topbar">
+    <div class="logo"><div class="logomark">S</div><span class="logoname">sage</span><span class="beta">BETA</span></div>
+    <div id="home-avatar" onclick="showScreen('s-hub')" style="width:32px;height:32px;border-radius:50%;background:var(--rose-bg);border:1.5px solid var(--rose-border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">👤</div>
+  </div>
+  <div class="scroll">
+    <div id="home-for-you-banner" style="display:none;" class="card-rose" style="margin-bottom:14px;">
+      <div class="for-you-badge">✦ Personalized for you</div>
+      <div class="title" style="margin-bottom:3px;" id="home-banner-title">Results tailored to your profile</div>
+      <div class="micro" id="home-banner-sub">Your health context shapes every evidence score</div>
+    </div>
+
+    <div class="eyebrow">Evidence-based women's health</div>
+    <div class="display">Is it actually backed <em>by research?</em></div>
+    <p class="subtitle" style="margin-bottom:16px;">Score any supplement, trend, or claim against actual clinical evidence.</p>
+
+    <div class="searchbar">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><circle cx="6.5" cy="6.5" r="4.5" stroke="#C85B6E" stroke-width="1.5"/><path d="M10 10L13.5 13.5" stroke="#C85B6E" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input id="home-input" type="text" placeholder='Try "inositol for PCOS" or paste a link…' />
+      <button class="sbtn" onclick="doSearch()"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 10L10 6 2 2v3l5 1-5 1v3z" fill="#fff"/></svg></button>
+    </div>
+    <div class="hints">
+      <span class="hint" onclick="searchFor('Inositol for PCOS')">💊 Inositol</span>
+      <span class="hint" onclick="searchFor('Seed cycling')">🌿 Seed cycling</span>
+      <span class="hint" onclick="searchFor('Spearmint tea for hormones')">🫖 Spearmint tea</span>
+      <span class="hint" onclick="searchFor('Magnesium glycinate for sleep')">🌙 Magnesium</span>
+      <span class="hint" onclick="searchFor('Ashwagandha for women')">🌱 Ashwagandha</span>
+      <span class="hint" onclick="searchFor('Vitex for cycle regulation')">🌸 Vitex</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+      <div class="title">Trending</div>
+      <span class="micro" style="color:var(--rose);cursor:pointer;">See all</span>
+    </div>
+
+    <div class="tcard" onclick="searchFor('Inositol for PCOS')">
+      <div class="ticon" style="background:#fdecea;">💊</div>
+      <div style="flex:1;min-width:0;"><div class="saved-name">Inositol for PCOS</div><div class="saved-meta">Supplement · Hormone health</div></div>
+      <span class="pill p-green">4.8</span>
+    </div>
+    <div class="tcard" onclick="searchFor('Seed cycling')">
+      <div class="ticon" style="background:var(--sage-bg);">🌿</div>
+      <div style="flex:1;min-width:0;"><div class="saved-name">Seed cycling</div><div class="saved-meta">Wellness trend · Hormones</div></div>
+      <span class="pill p-amber">2.8</span>
+    </div>
+    <div class="tcard" onclick="searchFor('Magnesium glycinate for sleep')">
+      <div class="ticon" style="background:#f3e8ff;">🌙</div>
+      <div style="flex:1;min-width:0;"><div class="saved-name">Magnesium glycinate</div><div class="saved-meta">Supplement · Sleep & PMS</div></div>
+      <span class="pill p-green">4.5</span>
+    </div>
+    <div class="tcard" onclick="searchFor('Spearmint tea for hormones')">
+      <div class="ticon" style="background:var(--green-bg);">🫖</div>
+      <div style="flex:1;min-width:0;"><div class="saved-name">Spearmint tea</div><div class="saved-meta">Herbal · Androgen reduction</div></div>
+      <span class="pill p-green">3.7</span>
+    </div>
+
+    <hr class="divl">
+    <div class="dbanner" onclick="showScreen('s-decoder')">
+      <div style="width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid var(--rose-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📋</div>
+      <div style="flex:1;min-width:0;"><div class="saved-name" style="margin-bottom:2px;">Seen a claim online?</div><div class="saved-meta">Paste it — we'll fact-check it against the research →</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ LOADING ══════════════════════ -->
+<div id="s-loading" class="loading-wrap">
+  <div class="logo" style="margin-bottom:22px;"><div class="logomark" style="width:40px;height:40px;border-radius:12px;font-size:18px;">S</div><span class="logoname" style="font-size:22px;">sage</span></div>
+  <div class="spinner"></div>
+  <div class="title" style="margin-bottom:5px;">Analyzing research</div>
+  <div class="subtitle" id="l-query" style="font-size:12px;margin-bottom:22px;"></div>
+  <div style="width:100%;max-width:260px;">
+    <div class="lstep on" id="ls1"><div class="lstep-dot"></div>Searching clinical databases</div>
+    <div class="lstep" id="ls2"><div class="lstep-dot"></div>Reviewing study quality</div>
+    <div class="lstep" id="ls3"><div class="lstep-dot"></div>Evaluating women-specific data</div>
+    <div class="lstep" id="ls4"><div class="lstep-dot"></div>Generating evidence score</div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SCREEN: RESULT ══════════════════════ -->
+<div id="s-result" class="screen">
+  <div class="topbar">
+    <div class="logo"><div class="logomark">S</div><span class="logoname">sage</span></div>
+    <button class="sbtn" onclick="addToSaved()" id="save-btn" title="Save to hub" style="background:var(--bg2);border:1px solid var(--border);">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 3.6L14 6.3l-3 2.9.7 4.1L8 11.1l-3.7 2.2.7-4.1-3-2.9 4.2-.7L8 2z" stroke="#a08880" stroke-width="1.3" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="scroll">
+    <div class="back" onclick="showScreen('s-home')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#C85B6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Back
+    </div>
+    <div id="r-personalized-note" style="display:none;" class="for-you-badge" style="margin-bottom:10px;">✦ Personalized for your profile</div>
+    <div class="eyebrow" id="r-cat">Supplement</div>
+    <div style="font-family:var(--display);font-size:22px;font-weight:600;color:var(--text);margin-bottom:5px;letter-spacing:-.01em;" id="r-title">—</div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+      <span class="pill" id="r-verdict-pill">—</span>
+      <span class="micro" id="r-date">Updated Apr 2025</span>
+    </div>
+    <div class="card">
+      <div class="score-wrap">
+        <svg width="68" height="68" viewBox="0 0 68 68" style="flex-shrink:0;">
+          <circle cx="34" cy="34" r="28" fill="none" stroke="#f0e6e4" stroke-width="6"/>
+          <circle cx="34" cy="34" r="28" fill="none" stroke="#C85B6E" stroke-width="6" id="r-ring" stroke-dasharray="140 35" stroke-linecap="round" transform="rotate(-90 34 34)"/>
+          <text x="34" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="#C85B6E" id="r-score-txt">—</text>
+          <text x="34" y="42" text-anchor="middle" font-size="8" fill="#a08880">/5.0</text>
+        </svg>
+        <div>
+          <div class="verdict-name" id="r-verdict">—</div>
+          <div class="conf-row"><span class="cdot" id="r-cdot" style="background:#4caf50;"></span><span style="font-size:11px;font-weight:500;" id="r-conf">High confidence</span></div>
+          <div class="micro" id="r-studies">—</div>
+        </div>
+      </div>
+      <div id="r-bars"></div>
+    </div>
+    <div class="card-rose">
+      <div class="eyebrow" style="margin-bottom:8px;">Why this verdict</div>
+      <div id="r-why"></div>
+    </div>
+    <div class="card">
+      <div class="title" style="font-size:14px;margin-bottom:10px;">Tradeoffs</div>
+      <div style="background:#fff8e1;border-radius:8px;padding:9px 11px;margin-bottom:8px;">
+        <div style="font-size:10px;font-weight:600;color:#7f4400;margin-bottom:3px;">Side effects</div>
+        <div class="micro" id="r-se" style="font-size:11px;color:var(--text2);line-height:1.5;"></div>
+      </div>
+      <div style="font-size:10px;font-weight:600;color:var(--text2);margin-bottom:4px;">Caution for</div>
+      <div class="micro" id="r-caution" style="font-size:11px;color:var(--text2);line-height:1.5;"></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="margin-bottom:8px;">Sources</div>
+      <div id="r-sources"></div>
+    </div>
+    <button class="btn-primary" id="r-save-btn" onclick="addToSaved()">+ Save to my hub</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ SCREEN: DECODER ══════════════════════ -->
+<div id="s-decoder" class="screen">
+  <div class="topbar">
+    <div class="logo"><div class="logomark">S</div><span class="logoname">sage</span></div>
+  </div>
+  <div class="scroll">
+    <div class="eyebrow">Claim decoder</div>
+    <div class="display" style="font-size:26px;margin-bottom:8px;">Fact-check <em>any claim</em></div>
+    <p class="subtitle" style="margin-bottom:16px;">Paste anything from TikTok, Instagram, a blog. We'll check it against clinical evidence.</p>
+    <div class="claim-wrap">
+      <textarea class="claim-ta" id="claim-input" rows="3" placeholder='"Spearmint tea cures hormonal acne in 2 weeks"&#10;&#10;Paste any health claim here…'></textarea>
+      <button class="sbtn" onclick="decodeClaim()" id="decode-btn" style="flex-shrink:0;margin-top:2px;"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 10L10 6 2 2v3l5 1-5 1v3z" fill="#fff"/></svg></button>
+    </div>
+    <div id="decoder-result" style="display:none;">
+      <div id="d-verdict-card" class="card-amber">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;" id="d-verdict-label">Misleading</div>
+        <div class="title" style="font-size:14px;margin-bottom:6px;" id="d-headline"></div>
+        <div class="micro" style="font-size:12px;color:var(--text2);line-height:1.55;" id="d-mislead"></div>
+      </div>
+      <div class="card-green">
+        <div style="font-size:10px;font-weight:700;color:#1b5e20;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;">What's actually true</div>
+        <div class="micro" style="font-size:12px;color:var(--text2);line-height:1.55;" id="d-truth"></div>
+      </div>
+      <div id="d-pills" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;"></div>
+    </div>
+    <hr class="divl">
+    <div class="micro" style="margin-bottom:10px;">Try an example:</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div class="hint" style="border-radius:10px;padding:10px 12px;font-size:12px;" onclick="exampleClaim(0)">"Castor oil packs detox your liver and balance hormones"</div>
+      <div class="hint" style="border-radius:10px;padding:10px 12px;font-size:12px;" onclick="exampleClaim(1)">"Myo-inositol reverses PCOS completely in 3 months"</div>
+      <div class="hint" style="border-radius:10px;padding:10px 12px;font-size:12px;" onclick="exampleClaim(2)">"Spearmint tea cures hormonal acne in 2 weeks"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SCREEN: HUB ══════════════════════ -->
+<div id="s-hub" class="screen">
+  <div class="topbar">
+    <div class="logo"><div class="logomark">S</div><span class="logoname">sage</span></div>
+    <span class="micro" style="color:var(--rose);cursor:pointer;" onclick="openOnboarding()">Edit profile</span>
+  </div>
+  <div class="scroll" id="hub-scroll">
+
+    <!-- profile header -->
+    <div id="hub-signed-out" style="display:none;">
+      <div class="card-rose" style="text-align:center;padding:22px 18px;">
+        <div style="font-size:32px;margin-bottom:10px;">🌿</div>
+        <div class="title" style="margin-bottom:5px;">Your personal health hub</div>
+        <p class="subtitle" style="font-size:12px;margin-bottom:16px;">Sign in to save research, personalize your evidence scores, and connect your health data.</p>
+        <button class="btn-primary" onclick="openOnboarding()">Get started — it takes 60 seconds</button>
+        <button class="btn-text" onclick="skipOnboarding()">Browse without an account</button>
+      </div>
+    </div>
+
+    <div id="hub-signed-in" style="display:none;">
+      <!-- profile card -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div class="avatar-ring" style="margin-bottom:0;" id="hub-avatar-el">🌸</div>
+        <div>
+          <div class="profile-name" id="hub-name">Maya</div>
+          <div class="micro" id="hub-joined">Member since Apr 2025</div>
+          <div class="profile-tags" id="hub-tags"></div>
+        </div>
+      </div>
+
+      <!-- personalization context -->
+      <div class="card-sage" style="margin-bottom:16px;">
+        <div class="eyebrow" style="margin-bottom:6px;">How sage personalizes for you</div>
+        <div class="micro" id="hub-context-text" style="font-size:12px;color:var(--text2);line-height:1.6;"></div>
+      </div>
+
+      <!-- saved research -->
+      <div class="hub-section-title">Saved research <span onclick="null">View all</span></div>
+      <div id="hub-saved-list">
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <div class="title" style="font-size:14px;margin-bottom:5px;">No saved research yet</div>
+          <div class="subtitle" style="font-size:12px;margin-bottom:14px;">Search for supplements or trends and tap ★ to save them here.</div>
+          <button class="btn-primary" onclick="showScreen('s-home')">Start searching</button>
+        </div>
+      </div>
+
+      <hr class="divl">
+
+      <!-- connect data -->
+      <div class="hub-section-title" style="margin-bottom:10px;">Connect your data <span>Learn more</span></div>
+      <div class="micro" style="margin-bottom:12px;color:var(--text3);font-size:11px;">Connect wearables, health apps, and biometrics to make your evidence scores even more precise.</div>
+
+      <div class="connect-card">
+        <div class="connect-icon" style="background:#f5f5f5;">⌚</div>
+        <div class="connect-info"><div class="connect-name">Apple Health</div><div class="connect-sub">Cycle, sleep, HRV, activity</div></div>
+        <button class="connect-btn" id="btn-apple" onclick="toggleConnect(this,'Apple Health')">Connect</button>
+      </div>
+      <div class="connect-card">
+        <div class="connect-icon" style="background:#fff0f5;">💍</div>
+        <div class="connect-info"><div class="connect-name">Oura Ring</div><div class="connect-sub">Sleep, readiness, temperature</div></div>
+        <button class="connect-btn" id="btn-oura" onclick="toggleConnect(this,'Oura Ring')">Connect</button>
+      </div>
+      <div class="connect-card">
+        <div class="connect-icon" style="background:#fff8e1;">📊</div>
+        <div class="connect-info"><div class="connect-name">MyFitnessPal</div><div class="connect-sub">Nutrition, macros, supplements</div></div>
+        <button class="connect-btn" id="btn-mfp" onclick="toggleConnect(this,'MyFitnessPal')">Connect</button>
+      </div>
+      <div class="connect-card">
+        <div class="connect-icon" style="background:#f0f4ff;">🏥</div>
+        <div class="connect-info"><div class="connect-name">Health records</div><div class="connect-sub">Lab results, diagnoses, Rx</div></div>
+        <button class="connect-btn" id="btn-health" onclick="toggleConnect(this,'Health records')">Connect</button>
+      </div>
+      <div class="connect-card">
+        <div class="connect-icon" style="background:#e8f5e9;">🩺</div>
+        <div class="connect-info"><div class="connect-name">Add biometrics</div><div class="connect-sub">Enter labs, cycle data manually</div></div>
+        <button class="connect-btn" onclick="showToast('Biometrics editor coming soon')">Add</button>
+      </div>
+
+      <hr class="divl">
+
+      <!-- provider export -->
+      <div class="hub-section-title" style="margin-bottom:8px;">Provider bridge</div>
+      <div class="subtitle" style="font-size:12px;margin-bottom:12px;">Share your research with your doctor — formatted and ready to discuss.</div>
+      <div class="export-row">
+        <div class="export-btn" onclick="exportPDF()"><div class="export-btn-icon">📄</div>Export PDF</div>
+        <div class="export-btn" onclick="copyToClipboard()"><div class="export-btn-icon">📋</div>Copy summary</div>
+        <div class="export-btn" onclick="showToast('Coming soon')"><div class="export-btn-icon">📧</div>Email provider</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ BOTTOM NAV ══════════════════════ -->
+<nav class="bnav">
+  <button class="ni on" id="nav-home" onclick="showScreen('s-home')">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 10.5L11 4l7 6.5V18a1 1 0 01-1 1H5a1 1 0 01-1-1v-7.5z" stroke="#C85B6E" stroke-width="1.4" stroke-linejoin="round"/><path d="M8.5 19v-5.5h5V19" stroke="#C85B6E" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    <span class="ni-label" style="color:var(--rose);">Search</span>
+  </button>
+  <button class="ni" id="nav-decoder" onclick="showScreen('s-decoder')">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3.5" y="3.5" width="15" height="15" rx="3" stroke="#a08880" stroke-width="1.4"/><path d="M7 8h8M7 11h8M7 14h5" stroke="#a08880" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span class="ni-label">Decoder</span>
+  </button>
+  <button class="ni" id="nav-hub" onclick="showScreen('s-hub')">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="3.5" stroke="#a08880" stroke-width="1.4"/><path d="M4 18c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="#a08880" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span class="ni-label">My hub</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════ ONBOARDING MODAL ══════════════════════ -->
+<div id="modal-bg" class="modal-bg" style="display:none;" onclick="handleModalBgClick(event)">
+  <div class="modal-sheet" onclick="e => e.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="progress-bar" id="ob-progress">
+      <div class="pstep done" id="ps1"></div><div class="pstep" id="ps2"></div><div class="pstep" id="ps3"></div>
+    </div>
+
+    <!-- STEP 1: name -->
+    <div id="ob-step1">
+      <div style="font-family:var(--display);font-size:22px;font-weight:600;color:var(--text);margin-bottom:5px;">What should we call you?</div>
+      <div class="subtitle" style="font-size:12px;margin-bottom:16px;">Just your first name is fine.</div>
+      <div class="searchbar" style="margin-bottom:20px;"><input id="ob-name-input" type="text" placeholder="Your first name…" style="font-size:14px;" /></div>
+      <button class="btn-primary" onclick="ob_step1_next()">Continue →</button>
+      <button class="btn-text" onclick="skipOnboarding()">Skip for now</button>
+    </div>
+
+    <!-- STEP 2: health focus -->
+    <div id="ob-step2" style="display:none;">
+      <div style="font-family:var(--display);font-size:22px;font-weight:600;color:var(--text);margin-bottom:5px;">What brings you to Sage?</div>
+      <div class="subtitle" style="font-size:12px;margin-bottom:14px;">Select all that apply. This personalizes every evidence score.</div>
+      <div id="ob-options">
+        <div class="ob-option" data-val="PCOS" onclick="toggleOption(this)"><div class="ob-option-icon">🌸</div><div class="ob-option-text"><div class="ob-option-title">PCOS</div><div class="ob-option-sub">Polycystic ovary syndrome</div></div><div class="ob-check">✓</div></div>
+        <div class="ob-option" data-val="Hormone health" onclick="toggleOption(this)"><div class="ob-option-icon">🔄</div><div class="ob-option-text"><div class="ob-option-title">Hormone health</div><div class="ob-option-sub">Cycle irregularities, PMS</div></div><div class="ob-check">✓</div></div>
+        <div class="ob-option" data-val="Fertility" onclick="toggleOption(this)"><div class="ob-option-icon">🤰</div><div class="ob-option-text"><div class="ob-option-title">Fertility & pregnancy</div><div class="ob-option-sub">TTC, prenatal, postpartum</div></div><div class="ob-check">✓</div></div>
+        <div class="ob-option" data-val="Perimenopause" onclick="toggleOption(this)"><div class="ob-option-icon">🌊</div><div class="ob-option-text"><div class="ob-option-title">Perimenopause</div><div class="ob-option-sub">Hormonal transitions</div></div><div class="ob-check">✓</div></div>
+        <div class="ob-option" data-val="Skincare" onclick="toggleOption(this)"><div class="ob-option-icon">🧴</div><div class="ob-option-text"><div class="ob-option-title">Skincare & beauty</div><div class="ob-option-sub">Ingredients, safety, efficacy</div></div><div class="ob-check">✓</div></div>
+        <div class="ob-option" data-val="Energy & mood" onclick="toggleOption(this)"><div class="ob-option-icon">⚡</div><div class="ob-option-text"><div class="ob-option-title">Energy & mood</div><div class="ob-option-sub">Sleep, anxiety, supplements</div></div><div class="ob-check">✓</div></div>
+      </div>
+      <button class="btn-primary" style="margin-top:14px;" onclick="ob_step2_next()">Continue →</button>
+    </div>
+
+    <!-- STEP 3: done -->
+    <div id="ob-step3" style="display:none;text-align:center;padding:10px 0;">
+      <div style="font-size:44px;margin-bottom:14px;">✦</div>
+      <div style="font-family:var(--display);font-size:24px;font-weight:600;color:var(--text);margin-bottom:6px;" id="ob-welcome-msg">You're all set, Maya</div>
+      <div class="subtitle" style="font-size:13px;margin-bottom:20px;">Sage will now personalize every evidence score based on your profile. You can always add more — wearables, lab results, cycle data — from your hub.</div>
+      <button class="btn-primary" onclick="finishOnboarding()">Start researching →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div><!-- /shell -->
+
+<script>
+const API = 'https://api.anthropic.com/v1/messages';
+
+// ── STATE ──────────────────────────────────────────────────────────────
+let profile = { name:'', focuses:[], hasAccount:false };
+let savedItems = [];
+let currentResult = null;
+let obStep = 1;
+let obSelections = [];
+
+// ── NAV ──────────────────────────────────────────────────────────────
+function showScreen(id) {
+  ['s-home','s-result','s-decoder','s-hub'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) { el.classList.remove('active'); el.style.display=''; }
+  });
+  const loading = document.getElementById('s-loading');
+  loading.classList.remove('active'); loading.style.display='none';
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); }
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  const navMap = {'s-home':'nav-home','s-decoder':'nav-decoder','s-hub':'nav-hub'};
+  if (navMap[id]) document.getElementById(navMap[id]).classList.add('on');
+  if (id === 's-hub') renderHub();
+  updateHomeBanner();
+}
+
+// ── PROFILE ──────────────────────────────────────────────────────────
+function updateHomeBanner() {
+  const banner = document.getElementById('home-for-you-banner');
+  const avatar = document.getElementById('home-avatar');
+  if (profile.hasAccount && profile.focuses.length > 0) {
+    banner.style.display = 'block';
+    document.getElementById('home-banner-title').textContent = `Scored for ${profile.name || 'you'}`;
+    document.getElementById('home-banner-sub').textContent = `Personalized for: ${profile.focuses.slice(0,2).join(', ')}${profile.focuses.length > 2 ? ' + more' : ''}`;
+    avatar.textContent = '🌸';
+    avatar.style.background = 'var(--rose-bg)';
+  } else {
+    banner.style.display = 'none';
+    avatar.textContent = '👤';
+  }
+}
+
+// ── ONBOARDING ────────────────────────────────────────────────────────
+function openOnboarding() {
+  obStep = 1; obSelections = [];
+  document.getElementById('ob-step1').style.display = 'block';
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step3').style.display = 'none';
+  document.querySelectorAll('.ob-option').forEach(o => o.classList.remove('sel'));
+  document.getElementById('ps1').classList.add('done');
+  document.getElementById('ps2').classList.remove('done');
+  document.getElementById('ps3').classList.remove('done');
+  document.getElementById('ob-name-input').value = profile.name || '';
+  document.getElementById('modal-bg').style.display = 'flex';
+}
+function handleModalBgClick(e) {
+  if (e.target === document.getElementById('modal-bg')) closeModal();
+}
+function closeModal() { document.getElementById('modal-bg').style.display = 'none'; }
+function skipOnboarding() { closeModal(); profile.hasAccount = false; renderHub(); }
+
+function ob_step1_next() {
+  const name = document.getElementById('ob-name-input').value.trim();
+  if (!name) { showToast('Enter your name to continue'); return; }
+  profile.name = name;
+  document.getElementById('ob-step1').style.display = 'none';
+  document.getElementById('ob-step2').style.display = 'block';
+  document.getElementById('ps2').classList.add('done');
+}
+
+function toggleOption(el) {
+  el.classList.toggle('sel');
+}
+
+function ob_step2_next() {
+  const selected = [...document.querySelectorAll('.ob-option.sel')].map(o => o.dataset.val);
+  if (selected.length === 0) { showToast('Select at least one focus area'); return; }
+  profile.focuses = selected;
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step3').style.display = 'block';
+  document.getElementById('ps3').classList.add('done');
+  document.getElementById('ob-welcome-msg').textContent = `You're all set, ${profile.name} ✦`;
+}
+
+function finishOnboarding() {
+  profile.hasAccount = true;
+  closeModal();
+  updateHomeBanner();
+  renderHub();
+  showScreen('s-hub');
+}
+
+// ── HUB RENDER ────────────────────────────────────────────────────────
+function renderHub() {
+  const out = document.getElementById('hub-signed-out');
+  const inn = document.getElementById('hub-signed-in');
+  if (!profile.hasAccount) { out.style.display='block'; inn.style.display='none'; return; }
+  out.style.display='none'; inn.style.display='block';
+  document.getElementById('hub-name').textContent = profile.name || 'My Hub';
+  const tagsEl = document.getElementById('hub-tags');
+  tagsEl.innerHTML = profile.focuses.map(f => `<span class="pill p-rose" style="font-size:9px;">${f}</span>`).join('');
+  // context text
+  const ctx = profile.focuses.length > 0
+    ? `Your evidence scores are personalized for ${profile.focuses.join(', ')}. When you search, Sage weighs research that's specifically relevant to your health context — not just general population data.`
+    : 'Add health focuses to your profile to personalize your evidence scores.';
+  document.getElementById('hub-context-text').textContent = ctx;
+  // saved list
+  const listEl = document.getElementById('hub-saved-list');
+  if (savedItems.length === 0) {
+    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="title" style="font-size:14px;margin-bottom:5px;">No saved research yet</div><div class="subtitle" style="font-size:12px;margin-bottom:14px;">Search for supplements or trends and tap ★ to save them here.</div><button class="btn-primary" onclick="showScreen('s-home')">Start searching</button></div>`;
+  } else {
+    const verdictPillMap = {'Likely beneficial':'p-green','Supported':'p-green','Mixed evidence':'p-amber','Moderate evidence':'p-amber','Low evidence':'p-rose','Not supported':'p-rose'};
+    listEl.innerHTML = savedItems.map((item,i) => `
+      <div class="saved-item" onclick="reopenSaved(${i})">
+        <div class="saved-icon" style="background:${item.bg || 'var(--rose-bg)'};">${item.emoji || '💊'}</div>
+        <div class="saved-info">
+          <div class="saved-name">${item.title}</div>
+          <div class="saved-meta">${item.category} · ${item.verdict}</div>
+        </div>
+        <button class="remove-btn" onclick="removeItem(event,${i})">×</button>
+      </div>`).join('');
+  }
+}
+
+function reopenSaved(i) {
+  const item = savedItems[i];
+  if (!item) return;
+  currentResult = item;
+  renderResult(item.query, item);
+  showScreen('s-result');
+}
+
+function removeItem(e, i) {
+  e.stopPropagation();
+  const name = savedItems[i]?.title;
+  savedItems.splice(i, 1);
+  renderHub();
+  showToast(`${name} removed from hub`);
+}
+
+function toggleConnect(btn, name) {
+  const on = btn.classList.contains('connected');
+  if (on) { btn.textContent = 'Connect'; btn.classList.remove('connected'); showToast(`${name} disconnected`); }
+  else { btn.textContent = 'Connected ✓'; btn.classList.add('connected'); showToast(`${name} connected`); }
+}
+
+function exportPDF() { showToast('Preparing provider PDF…'); setTimeout(() => showToast('PDF ready — check downloads'), 1800); }
+function copyToClipboard() {
+  const txt = savedItems.map(i => `${i.title}: ${i.verdict} (${i.score}/5.0)`).join('\n');
+  navigator.clipboard?.writeText(txt || 'No saved items yet').then(() => showToast('Research summary copied'));
+}
+
+// ── SEARCH ────────────────────────────────────────────────────────────
+function doSearch() {
+  const q = document.getElementById('home-input').value.trim();
+  if (!q) { showToast('Enter a supplement or trend'); return; }
+  searchFor(q);
+}
+document.getElementById('home-input').addEventListener('keydown', e => { if (e.key==='Enter') doSearch(); });
+
+function searchFor(query) {
+  document.getElementById('home-input').value = query;
+  ['s-home','s-result','s-decoder','s-hub'].forEach(s => { const el=document.getElementById(s); if(el){el.classList.remove('active');} });
+  const ld = document.getElementById('s-loading');
+  ld.style.display = 'flex'; ld.classList.add('active');
+  document.getElementById('l-query').innerHTML = `Looking up evidence for <strong style="color:var(--rose)">"${query}"</strong>`;
+  ['ls1','ls2','ls3','ls4'].forEach((s,i) => { const el=document.getElementById(s); el.classList.remove('on','done'); if(i===0)el.classList.add('on'); });
+  let step = 0;
+  const steps = ['ls1','ls2','ls3','ls4'];
+  const iv = setInterval(() => { if (step < 3) { document.getElementById(steps[step]).classList.remove('on'); document.getElementById(steps[step]).classList.add('done'); step++; document.getElementById(steps[step]).classList.add('on'); } }, 500);
+  callSearchAPI(query).then(r => { clearInterval(iv); steps.forEach(s => { document.getElementById(s).classList.remove('on'); document.getElementById(s).classList.add('done'); }); setTimeout(() => { ld.style.display='none'; ld.classList.remove('active'); renderResult(query, r); showScreen('s-result'); }, 350); }).catch(() => { clearInterval(iv); ld.style.display='none'; ld.classList.remove('active'); renderResult(query, getFallback(query)); showScreen('s-result'); });
+}
+
+async function callSearchAPI(query) {
+  const profileCtx = profile.focuses.length > 0 ? `The user has the following health context: ${profile.focuses.join(', ')}. Adjust your analysis to be relevant to this profile — especially the "Women-specific data" dimension and the why bullets.` : '';
+  const prompt = `You are Sage, an evidence-based women's health research tool. ${profileCtx}\n\nAnalyze: "${query}"\n\nReturn ONLY valid JSON:\n{"title":"","category":"Supplement|Herbal|Wellness Trend|Skincare|Diet","verdict":"Likely beneficial|Supported|Mixed evidence|Low evidence|Not supported","confidence":"High|Medium|Low","score":0.0,"studies":"X studies reviewed","verdictColor":"green|amber|rose","bars":[{"label":"Clinical studies","value":0.0,"color":"green|amber|rose"},{"label":"Safety profile","value":0.0,"color":"green|amber|rose"},{"label":"Expert consensus","value":0.0,"color":"green|amber|rose"},{"label":"Women-specific data","value":0.0,"color":"green|amber|rose"}],"why":["","","",""],"sideEffects":"","caution":"","sources":[{"name":"","year":"","badge":"Supports|Mixed|Limited"}]}`;
+  const res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] }) });
+  const data = await res.json();
+  return JSON.parse(data.content[0].text.replace(/```json|```/g,'').trim());
+}
+
+function getFallback(q) {
+  const ql = q.toLowerCase();
+  if (ql.includes('inositol')) return {title:'Inositol for PCOS',category:'Supplement',verdict:'Likely beneficial',confidence:'High',score:4.8,studies:'12 RCTs reviewed',verdictColor:'green',bars:[{label:'Clinical studies',value:4.8,color:'green'},{label:'Safety profile',value:4.5,color:'green'},{label:'Expert consensus',value:3.8,color:'green'},{label:'Women-specific data',value:4.8,color:'green'}],why:['12 randomized controlled trials, mostly in women with PCOS','Consistent results on ovulation rate, cycle length, and insulin markers','Studies are recent (2018–2024) and women-specific by design','No serious adverse events across all reviewed trials'],sideEffects:'Mild GI discomfort above 4g. Take with food.',caution:'Caution if on metformin — overlapping mechanisms.',sources:[{name:'PubMed',year:'2023',badge:'Supports'},{name:'Cochrane Review',year:'2022',badge:'Supports'}]};
+  if (ql.includes('seed')) return {title:'Seed cycling',category:'Wellness Trend',verdict:'Mixed evidence',confidence:'Low',score:2.8,studies:'4 studies reviewed',verdictColor:'amber',bars:[{label:'Clinical studies',value:2.0,color:'amber'},{label:'Safety profile',value:4.5,color:'green'},{label:'Expert consensus',value:2.0,color:'amber'},{label:'Women-specific data',value:2.5,color:'amber'}],why:['No RCTs specifically on seed cycling protocols','Evidence draws from individual seed nutrients — not the cycling pattern','Safe to try — seeds are nutritious regardless','Anecdotal support is widespread but not clinical evidence'],sideEffects:'None — seeds are food-safe.',caution:'No safety concerns. Limited evidence for the specific cycling protocol.',sources:[{name:'PubMed',year:'2021',badge:'Limited'},{name:'Nutrition Journal',year:'2020',badge:'Mixed'}]};
+  if (ql.includes('magnesium')) return {title:'Magnesium glycinate',category:'Supplement',verdict:'Supported',confidence:'High',score:4.5,studies:'18 studies reviewed',verdictColor:'green',bars:[{label:'Clinical studies',value:4.4,color:'green'},{label:'Safety profile',value:5.0,color:'green'},{label:'Expert consensus',value:4.2,color:'green'},{label:'Women-specific data',value:4.0,color:'green'}],why:['Strong evidence for sleep quality improvement','Consistent reduction in PMS symptoms across multiple trials','Excellent safety profile at standard doses (200-400mg)','Glycinate form has superior absorption and fewer GI side effects'],sideEffects:'Mild laxative effect at doses above 400mg.',caution:'May interact with certain antibiotics. Take 2 hours apart from medications.',sources:[{name:'PubMed',year:'2023',badge:'Supports'},{name:'NIH ODS',year:'2022',badge:'Supports'},{name:'Cochrane',year:'2021',badge:'Supports'}]};
+  return {title:q,category:'Supplement',verdict:'Mixed evidence',confidence:'Medium',score:3.2,studies:'6 studies reviewed',verdictColor:'amber',bars:[{label:'Clinical studies',value:3.0,color:'amber'},{label:'Safety profile',value:3.8,color:'green'},{label:'Expert consensus',value:3.0,color:'amber'},{label:'Women-specific data',value:2.8,color:'amber'}],why:['Some supporting clinical evidence exists','Results are inconsistent across studies','More women-specific research is needed','Generally considered safe at standard doses'],sideEffects:'Varies — check standard dosing guidelines.',caution:'Consult a provider if pregnant, breastfeeding, or on medication.',sources:[{name:'PubMed',year:'2022',badge:'Mixed'},{name:'NIH',year:'2021',badge:'Mixed'}]};
+}
+
+function renderResult(query, r) {
+  currentResult = { ...r, query, emoji: getEmoji(r.category), bg: getBg(r.verdictColor) };
+  document.getElementById('r-cat').textContent = r.category;
+  document.getElementById('r-title').textContent = r.title;
+  document.getElementById('r-date').textContent = 'Updated Apr 2025';
+  document.getElementById('r-studies').textContent = r.studies;
+  document.getElementById('r-se').textContent = r.sideEffects;
+  document.getElementById('r-caution').textContent = r.caution;
+  const cm = {green:{pill:'p-green',dot:'#4caf50',conf:'#1b5e20',bar:'#4caf50'},amber:{pill:'p-amber',dot:'#ff9800',conf:'#7f4400',bar:'#D4854A'},rose:{pill:'p-rose',dot:'#C85B6E',conf:'#7a1a2e',bar:'#C85B6E'}};
+  const c = cm[r.verdictColor]||cm.amber;
+  const vp = document.getElementById('r-verdict-pill'); vp.className='pill '+c.pill; vp.textContent = r.verdict;
+  document.getElementById('r-verdict').textContent = r.verdict;
+  document.getElementById('r-cdot').style.background = c.dot;
+  document.getElementById('r-conf').textContent = r.confidence+' confidence'; document.getElementById('r-conf').style.color = c.conf;
+  const sc = parseFloat(r.score); const circ = 176; const fill = Math.min(sc/5,1)*circ;
+  const ring = document.getElementById('r-ring'); ring.setAttribute('stroke-dasharray',`${fill.toFixed(1)} ${(circ-fill+35).toFixed(1)}`); ring.setAttribute('stroke',c.bar);
+  document.getElementById('r-score-txt').textContent = sc.toFixed(1); document.getElementById('r-score-txt').setAttribute('fill',c.bar);
+  document.getElementById('r-bars').innerHTML = r.bars.map(b => { const bc=(cm[b.color]||cm.amber).bar; const pct=Math.round((b.value/5)*100); return `<div class="barrow"><div class="barlbl">${b.label}</div><div class="bartrack"><div class="barfill" style="width:${pct}%;background:${bc};"></div></div><div class="barval" style="color:${bc};">${parseFloat(b.value).toFixed(1)}</div></div>`; }).join('');
+  document.getElementById('r-why').innerHTML = r.why.map(w=>`<div class="bul"><div class="buldot"></div><div class="bultext">${w}</div></div>`).join('');
+  const badgeMap={'Supports':'p-green','Mixed':'p-amber','Limited':'p-rose'};
+  document.getElementById('r-sources').innerHTML = r.sources.map(s=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);"><div><div style="font-size:12px;font-weight:500;">${s.name}</div><div class="micro">${s.year}</div></div><span class="pill ${badgeMap[s.badge]||'p-outline'}">${s.badge}</span></div>`).join('');
+  const pNote = document.getElementById('r-personalized-note');
+  pNote.style.display = profile.hasAccount && profile.focuses.length > 0 ? 'inline-flex' : 'none';
+  const already = savedItems.some(s=>s.title===r.title);
+  const btn = document.getElementById('r-save-btn'); btn.textContent = already ? '✓ Saved to hub' : '+ Save to my hub'; btn.disabled = already; btn.style.opacity = already ? '.6' : '1';
+  const topBtn = document.getElementById('save-btn');
+  topBtn.querySelector('path').setAttribute('fill', already ? '#C85B6E' : 'none');
+}
+
+function addToSaved() {
+  if (!currentResult) return;
+  if (!profile.hasAccount) { openOnboarding(); return; }
+  if (savedItems.some(s=>s.title===currentResult.title)) { showToast('Already in your hub'); return; }
+  savedItems.push({...currentResult});
+  const btn = document.getElementById('r-save-btn'); btn.textContent='✓ Saved to hub'; btn.disabled=true; btn.style.opacity='.6';
+  showToast(`Saved to your hub`);
+}
+
+function getEmoji(cat) { return {supplement:'💊',herbal:'🌿','wellness trend':'✨',skincare:'🧴',diet:'🥗'}[cat?.toLowerCase()]||'💊'; }
+function getBg(v) { return {green:'var(--green-bg)',amber:'var(--amber-bg)',rose:'var(--rose-bg)'}[v]||'var(--rose-bg)'; }
+
+// ── DECODER ──────────────────────────────────────────────────────────
+const EXAMPLES = ['"Castor oil packs detox your liver and balance hormones naturally"','"Myo-inositol reverses PCOS completely in 3 months"','"Spearmint tea cures hormonal acne in 2 weeks"'];
+function exampleClaim(i) { document.getElementById('claim-input').value = EXAMPLES[i]; decodeClaim(); }
+
+async function decodeClaim() {
+  const claim = document.getElementById('claim-input').value.trim();
+  if (!claim) { showToast('Paste a claim to fact-check'); return; }
+  document.getElementById('decoder-result').style.display = 'none';
+  const btn = document.getElementById('decode-btn');
+  btn.innerHTML = '<div style="width:10px;height:10px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;"></div>';
+  try { renderDecoder(await callDecoderAPI(claim)); }
+  catch { renderDecoder(getDecoderFallback(claim)); }
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 10L10 6 2 2v3l5 1-5 1v3z" fill="#fff"/></svg>';
+}
+
+async function callDecoderAPI(claim) {
+  const pCtx = profile.focuses.length>0 ? `User health context: ${profile.focuses.join(', ')}. ` : '';
+  const prompt = `${pCtx}Fact-check this women's health claim: ${claim}\n\nReturn ONLY valid JSON:\n{"verdictLabel":"Misleading|Partially true|Mostly accurate|Unsupported","verdictType":"mislead|partial|accurate","headline":"max 8 words","misleadBody":"2-3 sentences","truthBody":"2-3 sentences","pills":[{"label":"short fact","type":"green|amber|rose"}]}`;
+  const res = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,messages:[{role:'user',content:prompt}]})});
+  const data = await res.json();
+  return JSON.parse(data.content[0].text.replace(/```json|```/g,'').trim());
+}
+
+function getDecoderFallback(claim) {
+  const c = claim.toLowerCase();
+  if (c.includes('castor')) return {verdictLabel:'Misleading',verdictType:'mislead',headline:'"Detox" and hormone claims unsupported',misleadBody:'There is no clinical evidence that castor oil packs detox the liver or balance hormones. The liver detoxifies itself — no topical treatment changes this.',truthBody:'Castor oil has limited anti-inflammatory properties topically. There are no RCTs supporting hormone-balancing effects from packs.',pills:[{label:'Detox claim: not supported',type:'rose'},{label:'Hormone balance: no evidence',type:'rose'},{label:'Safe to use topically',type:'green'}]};
+  if (c.includes('inositol')) return {verdictLabel:'Partially true',verdictType:'partial',headline:'"Reverses" overstates what evidence shows',misleadBody:'"Reverses PCOS completely" is inaccurate — PCOS is chronic. Inositol improves markers but does not eliminate the diagnosis. "3 months" for complete reversal has no clinical basis.',truthBody:'Myo-inositol has strong evidence for improving ovulation, insulin sensitivity, and androgen levels in PCOS. It manages symptoms effectively — but does not reverse the condition.',pills:[{label:'Inositol for PCOS: strongly supported',type:'green'},{label:'"Reverses completely": not accurate',type:'rose'},{label:'Symptom improvement: yes',type:'green'}]};
+  return {verdictLabel:'Misleading',verdictType:'mislead',headline:'"Cures in 2 weeks" unsupported',misleadBody:'"Cure" overstates the evidence significantly. "2 weeks" has no clinical basis — studies show effects emerge over 30+ days.',truthBody:'Spearmint reduces free testosterone and may improve hormonal acne over 4–8 weeks. Moderate evidence. A supportive intervention, not a cure.',pills:[{label:'Anti-androgen effect: supported',type:'green'},{label:'"Cure" claim: not supported',type:'rose'},{label:'Timeline "2 weeks": no evidence',type:'rose'}]};
+}
+
+function renderDecoder(r) {
+  const mc = document.getElementById('d-verdict-card');
+  mc.className = r.verdictType==='accurate' ? 'card-green' : 'card-amber';
+  document.getElementById('d-verdict-label').textContent = r.verdictLabel;
+  document.getElementById('d-verdict-label').style.color = r.verdictType==='accurate' ? '#1b5e20' : '#7f4400';
+  document.getElementById('d-headline').textContent = r.headline;
+  document.getElementById('d-mislead').textContent = r.misleadBody;
+  document.getElementById('d-truth').textContent = r.truthBody;
+  const pm={'green':'p-green','amber':'p-amber','rose':'p-rose'};
+  document.getElementById('d-pills').innerHTML = (r.pills||[]).map(p=>`<span class="pill ${pm[p.type]||'p-outline'}" style="font-size:10px;">${p.label}</span>`).join('');
+  const res = document.getElementById('decoder-result'); res.style.display='block';
+  setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+// ── UTILS ──────────────────────────────────────────────────────────
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
+
+// init hub
+renderHub();
+</script>
+</body>
+</html>

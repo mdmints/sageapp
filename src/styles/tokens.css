@@ -1,0 +1,32 @@
+:root {
+  --rose: #C85B6E;
+  --rose2: #a8394c;
+  --rose-bg: #fdecea;
+  --rose-border: #f5cdd3;
+  --amber: #C97B3A;
+  --amber-bg: #fdf3e7;
+  --amber-border: #f5d9b0;
+  --green: #3d7a4a;
+  --green-bg: #eaf4ec;
+  --green-border: #b8dfc0;
+  --sage: #7B9E87;
+  --sage-bg: #eef5f1;
+  --bg: #FAF8F6;
+  --bg2: #f3ede8;
+  --bg3: #ece4dc;
+  --card: #ffffff;
+  --card-hover: #f0ebe5;
+  --border: #EDE5DF;
+  --border2: #ddd4cc;
+  --rose-focus: rgba(192, 133, 122, 0.46);
+  --text: #2A1F1A;
+  --text2: #6b4c40;
+  --text3: #a08880;
+  --text4: #c8b0a8;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --body: 'Outfit', sans-serif;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+}
