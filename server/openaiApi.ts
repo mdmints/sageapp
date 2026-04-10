@@ -270,15 +270,14 @@ export async function readRequestBody<T>(request: {
     return request.body as T
   }
 
-  const iterator = request[Symbol.asyncIterator]
-
-  if (!iterator) {
+  if (!request[Symbol.asyncIterator]) {
     return {} as T
   }
 
   const chunks: Uint8Array[] = []
+  const iterableRequest = request as AsyncIterable<Uint8Array | string>
 
-  for await (const chunk of { [Symbol.asyncIterator]: iterator }) {
+  for await (const chunk of iterableRequest) {
     chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
   }
 
