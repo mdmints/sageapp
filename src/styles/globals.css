@@ -616,9 +616,11 @@
   }
 
   .compare-scroll-row {
-    @apply -mx-[2px] flex gap-3 overflow-x-auto px-[2px] pb-[2px];
+    @apply flex gap-3 overflow-x-auto px-4 pb-[2px];
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
   }
 
   .compare-scroll-row::-webkit-scrollbar {
@@ -635,24 +637,22 @@
     background: linear-gradient(90deg, rgba(250,248,246,0) 0%, rgba(250,248,246,0.95) 70%, rgba(250,248,246,1) 100%);
   }
 
-  .compare-carousel-next {
-    @apply absolute right-[6px] top-1/2 z-[2] flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border;
-    background: rgba(255, 253, 251, 0.96);
-    border-color: var(--rose-border);
-    box-shadow: 0 10px 24px rgba(42, 31, 26, 0.12);
-    transition: transform .12s ease, background-color .15s ease, border-color .15s ease;
-  }
-
   .compare-card {
     @apply min-w-[180px] rounded-[var(--r-lg)] border px-[14px] py-3 text-left;
     background: var(--card);
     border-color: var(--border);
     transition: transform .12s ease, background-color .15s ease, border-color .15s ease;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .compare-card:hover {
     background: var(--card-hover);
     border-color: var(--rose-border);
+  }
+
+  .compare-card-last {
+    margin-right: 16px;
   }
 
   .compare-card-title {
@@ -663,6 +663,19 @@
   .compare-card-category {
     @apply mt-[2px] text-[11px];
     color: var(--text3);
+  }
+
+  .compare-dots {
+    @apply mt-3 flex items-center justify-center gap-1;
+  }
+
+  .compare-dot {
+    @apply h-[6px] w-[6px] rounded-full;
+    background: var(--border2);
+  }
+
+  .compare-dot.is-active {
+    background: #c0857a;
   }
 
   .claim-wrap {
@@ -1047,7 +1060,6 @@
   .saved-item:active,
   .decoder-banner:active,
   .compare-card:active,
-  .compare-carousel-next:active,
   .connect-button:active,
   .remove-button:active,
   .export-button:active,
