@@ -447,7 +447,16 @@ Write "whatToExpect.timeline" as when effects might show up based on study durat
 Let "whatToExpect.timeline" reflect the user's age, gender, or life stage when the timeline or expected outcomes differ meaningfully across populations.
 Write "whatToExpect.improvement" as a realistic description of what improvement actually looked like in studies.
 Write "whatToExpect.watchFor" as early signs it may not be working or may not suit the user.
-Write "personalizedTake" as 2-3 direct sentences on whether this is worth trying given the user's health profile, age, gender, life stage, goals, or conditions when provided.
+Write "personalizedTake" as 2 to 4 sentences maximum.
+Write "personalizedTake" like a knowledgeable friend who knows the user's age and goals and has read the research, not like a recommendation engine repeating inputs.
+For "personalizedTake", reason across all available profile data together instead of listing the profile back.
+Use age to contextualize the evidence when the research supports it. A 28-year-old and a 45-year-old may have different hormonal contexts, life stages, and applicability.
+Use the user's health goals to identify which specific part of the evidence is most relevant. If a goal is skincare and the research is more relevant through a gut-skin or hormone-skin connection, surface that specific angle instead of generic benefits.
+If women-specific evidence exists for the user's age range or hormonal context, reference that directly. For example, mention when the strongest studies focused on women in a similar age range, or when most studies focused on a different population.
+If the personalization match is weak, say so plainly instead of forcing a positive spin.
+When supported by the evidence, name the specific form, strain, subtype, or variant most relevant to the user's profile instead of only the generic supplement name.
+Do not mention evidence dimensions that are irrelevant to the user's goals.
+Never start "personalizedTake" with "Given your focus on" or any close variation.
 Make "personalizedTake" feel natural and contextual, not mechanical. Good example: "At this stage, the evidence here is actually pretty relevant to you." Avoid copy like "As a 34 year old woman..."
 Keep "sources" concise and "compareOptions" to 2-3 relevant alternatives.`
 
