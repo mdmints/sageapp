@@ -3,7 +3,7 @@ import {
   handleSearchRequest,
   readRequestBody,
   type SearchRequestBody,
-} from '../server/openaiApi'
+} from '../server/openaiApi.js'
 
 export default async function handler(
   req: {
