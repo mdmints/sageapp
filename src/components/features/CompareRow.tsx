@@ -43,10 +43,44 @@ export function CompareRow({ items }: { items: CompareOption[] }) {
     };
   }, [items]);
 
+  function scrollByDirection(direction: 'back' | 'forward') {
+    const container = scrollRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const firstCard = container.querySelector<HTMLElement>('.compare-card');
+    const scrollStep = firstCard ? firstCard.offsetWidth + 12 : container.clientWidth;
+
+    container.scrollBy({
+      left: direction === 'forward' ? scrollStep : -scrollStep,
+      behavior: 'smooth',
+    });
+  }
+
   return (
     <div className="mb-4">
       <div className="result-meta-label">Compare</div>
       <div className="compare-carousel">
+        {activeIndex > 0 ? (
+          <button
+            aria-label="Show previous comparisons"
+            className="compare-carousel-button compare-carousel-button-back"
+            onClick={() => scrollByDirection('back')}
+            type="button"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M10 3.5L6 8l4 4.5"
+                stroke="#C0857A"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        ) : null}
         <div className="compare-scroll-row" ref={scrollRef}>
           {items.map((item, index) => (
             <button
@@ -65,6 +99,24 @@ export function CompareRow({ items }: { items: CompareOption[] }) {
             </button>
           ))}
         </div>
+        {activeIndex < items.length - 1 ? (
+          <button
+            aria-label="Show more comparisons"
+            className="compare-carousel-button compare-carousel-button-next"
+            onClick={() => scrollByDirection('forward')}
+            type="button"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M6 3.5L10 8l-4 4.5"
+                stroke="#C0857A"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        ) : null}
       </div>
       <div className="compare-dots" aria-label="Compare scroll position">
         {items.map((item, index) => (

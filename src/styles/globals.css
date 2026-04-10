@@ -637,6 +637,28 @@
     background: linear-gradient(90deg, rgba(250,248,246,0) 0%, rgba(250,248,246,0.95) 70%, rgba(250,248,246,1) 100%);
   }
 
+  .compare-carousel::before {
+    content: '';
+    @apply pointer-events-none absolute bottom-0 left-0 top-0 z-[1] w-10;
+    background: linear-gradient(270deg, rgba(250,248,246,0) 0%, rgba(250,248,246,0.95) 70%, rgba(250,248,246,1) 100%);
+  }
+
+  .compare-carousel-button {
+    @apply absolute top-1/2 z-[2] flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border;
+    background: rgba(255, 253, 251, 0.96);
+    border-color: var(--rose-border);
+    box-shadow: 0 10px 24px rgba(42, 31, 26, 0.12);
+    transition: transform .12s ease, background-color .15s ease, border-color .15s ease;
+  }
+
+  .compare-carousel-button-back {
+    left: 6px;
+  }
+
+  .compare-carousel-button-next {
+    right: 6px;
+  }
+
   .compare-card {
     @apply min-w-[180px] rounded-[var(--r-lg)] border px-[14px] py-3 text-left;
     background: var(--card);
@@ -1060,6 +1082,7 @@
   .saved-item:active,
   .decoder-banner:active,
   .compare-card:active,
+  .compare-carousel-button:active,
   .connect-button:active,
   .remove-button:active,
   .export-button:active,
