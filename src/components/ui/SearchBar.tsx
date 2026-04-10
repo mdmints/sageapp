@@ -53,6 +53,26 @@ export function SearchBar({
         placeholder={placeholder}
         type="text"
       />
+      {value ? (
+        <button
+          aria-label="Clear search"
+          className="searchbar-clear-button"
+          onClick={() => {
+            onChange('');
+            inputRef.current?.focus();
+          }}
+          type="button"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path
+              d="M3 3L9 9M9 3L3 9"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+      ) : null}
       <button aria-label="Submit search" className="searchbar-submit" type="submit">
         <svg width="12" height="12" viewBox="0 0 12 12">
           <path d="M2 10L10 6 2 2v3l5 1-5 1v3z" fill="#fff" />

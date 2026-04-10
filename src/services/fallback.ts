@@ -279,6 +279,8 @@ export function getDecoderFallback(claim: string): DecoderResult {
     return {
       verdictLabel: 'Misleading',
       verdictType: 'mislead',
+      confidence: 'High',
+      needsMoreDetail: false,
       headline: '"Detox" and hormone claims unsupported',
       misleadBody:
         'There is no clinical evidence that castor oil packs detox the liver or balance hormones. The liver detoxifies itself — no topical treatment changes this.',
@@ -296,6 +298,8 @@ export function getDecoderFallback(claim: string): DecoderResult {
     return {
       verdictLabel: 'Partially true',
       verdictType: 'partial',
+      confidence: 'High',
+      needsMoreDetail: false,
       headline: '"Reverses" overstates what evidence shows',
       misleadBody:
         '"Reverses PCOS completely" is inaccurate — PCOS is chronic. Inositol improves markers but does not eliminate the diagnosis. "3 months" for complete reversal has no clinical basis.',
@@ -312,6 +316,8 @@ export function getDecoderFallback(claim: string): DecoderResult {
   return {
     verdictLabel: 'Misleading',
     verdictType: 'mislead',
+    confidence: 'Medium',
+    needsMoreDetail: false,
     headline: '"Cures in 2 weeks" unsupported',
     misleadBody:
       '"Cure" overstates the evidence significantly. "2 weeks" has no clinical basis — studies show effects emerge over 30+ days.',

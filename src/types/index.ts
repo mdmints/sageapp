@@ -118,6 +118,8 @@ export interface DecoderPill {
 export interface DecoderResult {
   verdictLabel: string;
   verdictType: DecoderVerdictType;
+  confidence?: 'High' | 'Medium' | 'Low';
+  needsMoreDetail?: boolean;
   headline: string;
   misleadBody: string;
   truthBody: string;

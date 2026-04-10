@@ -34,13 +34,32 @@ export function HomeScreen() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <TopBar
         rightSlot={
-          <button
-            className="profile-avatar-button"
-            onClick={() => navigate('/hub')}
-            type="button"
-          >
-            {profile.hasAccount ? '🌸' : '👤'}
-          </button>
+          <div className="flex items-center gap-[10px]">
+            <button
+              aria-label="How Sage works"
+              className="home-info-button"
+              onClick={() => navigate('/how-sage-works')}
+              type="button"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.2" />
+                <path
+                  d="M9 7.35V11"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+                <circle cx="9" cy="5.25" r="0.75" fill="currentColor" />
+              </svg>
+            </button>
+            <button
+              className="profile-avatar-button"
+              onClick={() => navigate('/hub')}
+              type="button"
+            >
+              {profile.hasAccount ? '🌸' : '👤'}
+            </button>
+          </div>
         }
         showBeta
       />
@@ -67,6 +86,15 @@ export function HomeScreen() {
           placeholder='Try "inositol for PCOS" or paste a link…'
           value={query}
         />
+        <div className="flex justify-end">
+          <button
+            className="home-hero-link"
+            onClick={() => navigate('/how-sage-works')}
+            type="button"
+          >
+            How does Sage work?
+          </button>
+        </div>
        
 
         <div className="mt-10 mb-[10px] flex items-baseline justify-between">
@@ -105,16 +133,6 @@ export function HomeScreen() {
         ) : null}
 
       </ScreenLayout>
-
-      <div className="home-secondary-link-wrap">
-        <button
-          className="how-sage-link-card"
-          onClick={() => navigate('/how-sage-works')}
-          type="button"
-        >
-          How Sage works
-        </button>
-      </div>
 
       <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
     </div>

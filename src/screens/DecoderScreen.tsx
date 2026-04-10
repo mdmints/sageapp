@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { decoderExampleClaims } from '../content/decoder';
 import { useProfile } from '../hooks/useProfile';
 import { useToast } from '../hooks/useToast';
@@ -10,12 +10,26 @@ import { Card } from '../components/ui/Card';
 import { Pill } from '../components/ui/Pill';
 import type { DecoderResult } from '../types';
 
+const videoPlatformPatterns = [
+  'tiktok.com',
+  'instagram.com/reel',
+  'youtube.com/shorts',
+];
+
+function isVideoPlatformLink(value: string) {
+  const normalizedValue = value.toLowerCase();
+  return videoPlatformPatterns.some((pattern) => normalizedValue.includes(pattern));
+}
+
 export function DecoderScreen() {
   const { profile } = useProfile();
   const { showToast } = useToast();
+  const claimInputRef = useRef<HTMLInputElement | null>(null);
   const [claim, setClaim] = useState('');
   const [result, setResult] = useState<DecoderResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [videoFallbackInput, setVideoFallbackInput] = useState('');
+  const [hasDismissedExamples, setHasDismissedExamples] = useState(false);
 
   async function submitClaim(nextClaim = claim) {
     const trimmedClaim = nextClaim.trim();
@@ -25,8 +39,17 @@ export function DecoderScreen() {
       return;
     }
 
+    if (isVideoPlatformLink(trimmedClaim)) {
+      setClaim(trimmedClaim);
+      setResult(null);
+      setVideoFallbackInput('');
+      setIsLoading(false);
+      return;
+    }
+
     setClaim(trimmedClaim);
     setResult(null);
+    setVideoFallbackInput('');
     setIsLoading(true);
 
     try {
@@ -37,6 +60,9 @@ export function DecoderScreen() {
       setIsLoading(false);
     }
   }
+
+  const showVideoFallback = isVideoPlatformLink(claim);
+  const showNeedsMoreDetail = Boolean(result?.needsMoreDetail && result.confidence === 'Low');
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -51,13 +77,41 @@ export function DecoderScreen() {
         </p>
 
         <div className="claim-wrap">
-          <textarea
-            className="claim-textarea"
-            onChange={(event) => setClaim(event.target.value)}
+          <input
+            ref={claimInputRef}
+            className="claim-input"
+            onChange={(event) => {
+              setClaim(event.target.value);
+              setResult(null);
+              if (event.target.value) {
+                setHasDismissedExamples(true);
+              }
+            }}
             placeholder={`"Spearmint tea cures hormonal acne in 2 weeks"`}
-            rows={1}
+            type="text"
             value={claim}
           />
+          {claim ? (
+            <button
+              aria-label="Clear claim"
+              className="claim-clear-button"
+              onClick={() => {
+                setClaim('');
+                setResult(null);
+                claimInputRef.current?.focus();
+              }}
+              type="button"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path
+                  d="M3 3L9 9M9 3L3 9"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          ) : null}
           <button className="searchbar-submit mt-[2px]" onClick={() => void submitClaim()} type="button">
             {isLoading ? (
               <div className="submit-spinner" />
@@ -69,7 +123,57 @@ export function DecoderScreen() {
           </button>
         </div>
 
-        {result ? (
+        {showVideoFallback ? (
+          <Card>
+            <div className="mb-[8px] text-[14px] font-semibold text-[var(--text)]">
+              We can&apos;t watch the video (yet)
+            </div>
+            <div className="mb-4 text-[12px] leading-[1.6] text-[var(--text2)]">
+              TikToks and reels live in the audio, not the caption. Paste what you heard or saw
+              claimed in the video and we&apos;ll fact-check it properly.
+            </div>
+            <div className="claim-wrap mb-3">
+              <textarea
+                className="claim-textarea"
+                onChange={(event) => setVideoFallbackInput(event.target.value)}
+                placeholder="e.g. vibration plates boost lymphatic drainage and help with digestion..."
+                rows={2}
+                value={videoFallbackInput}
+              />
+            </div>
+            <button
+              className="btn-primary"
+              onClick={() => void submitClaim(videoFallbackInput)}
+              type="button"
+            >
+              Check this claim
+            </button>
+            <div className="micro mt-[10px]">
+              You can also paste a caption, a comment, or type a claim from memory. It all works.
+            </div>
+          </Card>
+        ) : null}
+
+        {showNeedsMoreDetail ? (
+          <Card>
+            <div className="mb-[8px] text-[14px] font-semibold text-[var(--text)]">
+              This claim is a bit vague. Can you add more detail about what was said?
+            </div>
+            <div className="claim-wrap mb-3">
+              <textarea
+                className="claim-textarea"
+                onChange={(event) => setClaim(event.target.value)}
+                rows={2}
+                value={claim}
+              />
+            </div>
+            <button className="btn-primary" onClick={() => void submitClaim()} type="button">
+              Check this claim
+            </button>
+          </Card>
+        ) : null}
+
+        {result && !showNeedsMoreDetail ? (
           <div>
             <Card variant={result.verdictType === 'accurate' ? 'green' : 'amber'}>
               <div
@@ -103,20 +207,24 @@ export function DecoderScreen() {
           </div>
         ) : null}
 
-        <hr className="section-divider" />
-        <div className="micro mb-[10px]">Try an example:</div>
-        <div className="flex flex-col gap-[7px]">
-          {decoderExampleClaims.map((example) => (
-            <button
-              className="hint-pill !rounded-[10px] !px-3 !py-[10px] !text-[12px] text-left"
-              key={example}
-              onClick={() => void submitClaim(example)}
-              type="button"
-            >
-              {example}
-            </button>
-          ))}
-        </div>
+        {!hasDismissedExamples && !result ? (
+          <>
+            <hr className="section-divider" />
+            <div className="micro mb-[10px]">Try an example:</div>
+            <div className="flex flex-col gap-[7px]">
+              {decoderExampleClaims.map((example) => (
+                <button
+                  className="hint-pill !rounded-[10px] !px-3 !py-[10px] !text-[12px] text-left"
+                  key={example}
+                  onClick={() => void submitClaim(example)}
+                  type="button"
+                >
+                  {example}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : null}
       </ScreenLayout>
     </div>
   );

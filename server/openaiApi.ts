@@ -152,6 +152,8 @@ const decoderResponseSchema = {
   required: [
     'verdictLabel',
     'verdictType',
+    'confidence',
+    'needsMoreDetail',
     'headline',
     'misleadBody',
     'truthBody',
@@ -160,6 +162,8 @@ const decoderResponseSchema = {
   properties: {
     verdictLabel: { type: 'string' },
     verdictType: { type: 'string', enum: ['mislead', 'partial', 'accurate'] },
+    confidence: { type: 'string', enum: ['High', 'Medium', 'Low'] },
+    needsMoreDetail: { type: 'boolean' },
     headline: { type: 'string' },
     misleadBody: { type: 'string' },
     truthBody: { type: 'string' },
@@ -486,7 +490,18 @@ export async function handleDecodeRequest(
 Return structured JSON.
 Keep the headline under 8 words.
 Keep each body to 2-3 short sentences.
-Return 2-4 pills.`
+Return 2-4 pills.
+First identify the explicit claims in the text.
+Then identify any implicit claims suggested by the context, even if they are not directly stated.
+Also identify claims made by omission, including when the text frames something like a medical alternative without stating that directly.
+Fact-check each claim independently against clinical evidence before deciding the overall verdict.
+If there are multiple claims, prioritize the 2 or 3 most significant ones instead of every minor point.
+Make it clear which phrase, wording, or part of the original text each important claim came from.
+Use "misleadBody" to explain what is misleading, overstated, unsupported, or missing.
+Use "truthBody" to explain what is actually supported by evidence.
+Set "confidence" to "Low" and "needsMoreDetail" to true if the input is too vague to fact-check responsibly.
+When "needsMoreDetail" is true, make the headline briefly say the claim needs more detail, and keep both body fields focused on what extra context would help.
+If the input is specific enough to assess, set "needsMoreDetail" to false.`
 
   const response = await client.responses.create({
     model,

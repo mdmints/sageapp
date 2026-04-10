@@ -108,151 +108,156 @@ export function OnboardingModal({
     closeModal();
   }
 
+  const progressWidth = `${(step / TOTAL_STEPS) * 100}%`;
+
   return (
-    <div className="modal-backdrop" onClick={closeModal} role="presentation">
-      <div
-        className="modal-sheet"
-        onClick={(event) => event.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
-        <div className="modal-handle" />
-        <div className="progress-row">
-          {Array.from({ length: TOTAL_STEPS }).map((_, index) => (
-            <div
-              className={`progress-step ${step >= index + 1 ? 'is-done' : ''}`}
-              key={index}
-            />
-          ))}
+    <div className="onboarding-screen" role="dialog" aria-modal="true">
+      <div className="onboarding-header">
+        <div className="logo">
+          <div className="logomark">S</div>
+          <span className="logoname">sage</span>
         </div>
+      </div>
+      <div className="onboarding-progress-row">
+        <div className="onboarding-progress">
+          <div className="onboarding-progress-fill" style={{ width: progressWidth }} />
+        </div>
+        <div className="onboarding-progress-label">Step {step} of {TOTAL_STEPS}</div>
+      </div>
 
-        {step === 1 ? (
-          <div>
-            <div className="modal-title">What should we call you?</div>
-            <div className="subtitle text-[12px] mb-4">Just your first name is fine.</div>
-            <div className="searchbar mb-5">
-              <input
-                className="searchbar-input text-[14px]"
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Your first name…"
-                type="text"
-                value={name}
-              />
-            </div>
-            <button className="btn-primary" onClick={continueToAge} type="button">
-              Continue →
-            </button>
-            <button className="btn-text" onClick={handleSkip} type="button">
-              Skip for now
-            </button>
+      <div className="onboarding-body">
+        <div className="onboarding-slide-viewport">
+          <div
+            className="onboarding-slide-track"
+            style={{ transform: `translateX(-${(step - 1) * 100}%)` }}
+          >
+            <section className="onboarding-step-panel">
+              <div className="onboarding-step-inner">
+                <div className="modal-title">What should we call you?</div>
+                <div className="searchbar mb-5">
+                  <input
+                    className="searchbar-input text-[14px]"
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="Your first name…"
+                    type="text"
+                    value={name}
+                  />
+                </div>
+              </div>
+              <div className="onboarding-footer">
+                <button className="btn-primary" onClick={continueToAge} type="button">
+                  Continue →
+                </button>
+                <button className="onboarding-skip-link" onClick={handleSkip} type="button">
+                  Skip for now
+                </button>
+              </div>
+            </section>
+
+            <section className="onboarding-step-panel">
+              <div className="onboarding-step-inner">
+                <div className="modal-title">How old are you?</div>
+                <div className="searchbar mb-5">
+                  <input
+                    className="searchbar-input text-[14px]"
+                    inputMode="numeric"
+                    onChange={(event) => setAge(event.target.value.replace(/[^\d]/g, ''))}
+                    placeholder="Your age…"
+                    type="text"
+                    value={age}
+                  />
+                </div>
+              </div>
+              <div className="onboarding-footer">
+                <button className="btn-primary" onClick={continueToGender} type="button">
+                  Continue →
+                </button>
+                <button className="onboarding-skip-link" onClick={handleSkip} type="button">
+                  Skip for now
+                </button>
+              </div>
+            </section>
+
+            <section className="onboarding-step-panel">
+              <div className="onboarding-step-inner">
+                <div className="modal-title">How do you identify?</div>
+                <div className="onboarding-pill-row">
+                  {onboardingGenderOptions.map((option) => {
+                    const isSelected = gender === option.value;
+
+                    return (
+                      <button
+                        className={`onboarding-choice-pill ${isSelected ? 'is-selected' : ''}`}
+                        key={option.value}
+                        onClick={() => setGender(option.value)}
+                        type="button"
+                      >
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="onboarding-footer">
+                <button className="btn-primary" onClick={continueToFocuses} type="button">
+                  Continue →
+                </button>
+                <button className="onboarding-skip-link" onClick={handleSkip} type="button">
+                  Skip for now
+                </button>
+              </div>
+            </section>
+
+            <section className="onboarding-step-panel">
+              <div className="onboarding-step-inner">
+                <div className="modal-title">What brings you to Sage?</div>
+                <div>
+                  {onboardingFocuses.map((option) => {
+                    const isSelected = focuses.includes(option.value);
+
+                    return (
+                      <button
+                        className={`onboarding-option ${isSelected ? 'is-selected' : ''}`}
+                        key={option.value}
+                        onClick={() => toggleFocus(option.value)}
+                        type="button"
+                      >
+                        <div className="onboarding-option-icon">{option.emoji}</div>
+                        <div className="min-w-0 flex-1 text-left">
+                          <div className="onboarding-option-title">{option.title}</div>
+                          <div className="onboarding-option-sub">{option.subtitle}</div>
+                        </div>
+                        <div className="onboarding-check">{isSelected ? '✓' : ''}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="onboarding-footer">
+                <button className="btn-primary" onClick={continueToConfirmation} type="button">
+                  Continue →
+                </button>
+                <button className="onboarding-skip-link" onClick={handleSkip} type="button">
+                  Skip for now
+                </button>
+              </div>
+            </section>
+
+            <section className="onboarding-step-panel">
+              <div className="onboarding-confirmation">
+                <div className="logomark onboarding-confirmation-mark">S</div>
+                <div className="onboarding-confirmation-title">
+                  Welcome to Sage, {name.trim() || 'there'}
+                </div>
+              </div>
+              <div className="onboarding-footer">
+                <button className="btn-primary" onClick={finish} type="button">
+                  Take me to Sage
+                </button>
+              </div>
+            </section>
           </div>
-        ) : null}
-
-        {step === 2 ? (
-          <div>
-            <div className="modal-title">How old are you?</div>
-            <div className="subtitle text-[12px] mb-4">
-              Just your age is enough — no birth date needed.
-            </div>
-            <div className="searchbar mb-5">
-              <input
-                className="searchbar-input text-[14px]"
-                inputMode="numeric"
-                onChange={(event) => setAge(event.target.value.replace(/[^\d]/g, ''))}
-                placeholder="Your age…"
-                type="text"
-                value={age}
-              />
-            </div>
-            <button className="btn-primary" onClick={continueToGender} type="button">
-              Continue →
-            </button>
-          </div>
-        ) : null}
-
-        {step === 3 ? (
-          <div>
-            <div className="modal-title">How do you identify?</div>
-            <div className="subtitle text-[12px] mb-[14px]">
-              Choose the option that feels right for you.
-            </div>
-            <div className="onboarding-pill-row">
-              {onboardingGenderOptions.map((option) => {
-                const isSelected = gender === option.value;
-
-                return (
-                  <button
-                    className={`onboarding-choice-pill ${isSelected ? 'is-selected' : ''}`}
-                    key={option.value}
-                    onClick={() => setGender(option.value)}
-                    type="button"
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              className="btn-primary mt-[14px]"
-              onClick={continueToFocuses}
-              type="button"
-            >
-              Continue →
-            </button>
-          </div>
-        ) : null}
-
-        {step === 4 ? (
-          <div>
-            <div className="modal-title">What brings you to Sage?</div>
-            <div className="subtitle text-[12px] mb-[14px]">
-              Select all that apply. This personalizes every evidence score.
-            </div>
-            <div>
-              {onboardingFocuses.map((option) => {
-                const isSelected = focuses.includes(option.value);
-
-                return (
-                  <button
-                    className={`onboarding-option ${isSelected ? 'is-selected' : ''}`}
-                    key={option.value}
-                    onClick={() => toggleFocus(option.value)}
-                    type="button"
-                  >
-                    <div className="onboarding-option-icon">{option.emoji}</div>
-                    <div className="min-w-0 flex-1 text-left">
-                      <div className="onboarding-option-title">{option.title}</div>
-                      <div className="onboarding-option-sub">{option.subtitle}</div>
-                    </div>
-                    <div className="onboarding-check">{isSelected ? '✓' : ''}</div>
-                  </button>
-                );
-              })}
-            </div>
-            <button
-              className="btn-primary mt-[14px]"
-              onClick={continueToConfirmation}
-              type="button"
-            >
-              Continue →
-            </button>
-          </div>
-        ) : null}
-
-        {step === 5 ? (
-          <div className="py-2 text-center">
-            <div className="mb-[14px] text-[44px]">✦</div>
-            <div className="font-display text-[24px] font-semibold text-[var(--text)] mb-[6px] tracking-[-0.02em]">
-              You&apos;re all set, {name.trim() || 'there'} ✦
-            </div>
-            <div className="subtitle text-[13px] mb-5">
-              Sage now knows a little more about you. Research and results will be tailored to where you are, what you're working on, and what matters to your health.
-            </div>
-            <button className="btn-primary" onClick={finish} type="button">
-              Start researching →
-            </button>
-          </div>
-        ) : null}
+        </div>
       </div>
     </div>
   );

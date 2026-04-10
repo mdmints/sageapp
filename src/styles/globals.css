@@ -283,6 +283,16 @@
     color: var(--text4);
   }
 
+  .searchbar-clear-button {
+    @apply flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-none bg-transparent;
+    color: var(--text3);
+    transition: transform .12s ease, color .15s ease;
+  }
+
+  .searchbar-clear-button:active {
+    transform: scale(0.98);
+  }
+
   .searchbar-submit {
     @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] border-none;
     background: var(--rose);
@@ -677,6 +687,33 @@
     color: var(--text4);
   }
 
+  .claim-input {
+    @apply h-[30px] min-w-0 flex-1 border-none bg-transparent text-[12px] italic leading-[30px] outline-none;
+    color: var(--text);
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .claim-input::placeholder {
+    color: var(--text4);
+  }
+
+  .claim-input::-webkit-scrollbar {
+    display: none;
+  }
+
+  .claim-clear-button {
+    @apply flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-none bg-transparent;
+    color: var(--text3);
+    transition: transform .12s ease, color .15s ease;
+  }
+
+  .claim-clear-button:active {
+    transform: scale(0.98);
+  }
+
   .submit-spinner {
     @apply h-[10px] w-[10px] rounded-full border-2;
     border-color: rgba(255,255,255,.4);
@@ -776,37 +813,83 @@
     @apply text-[18px];
   }
 
-  .modal-backdrop {
-    @apply absolute inset-0 z-[200] flex items-end;
-    background: rgba(42,31,26,.5);
+  .onboarding-screen {
+    @apply absolute inset-0 z-[200] flex flex-col;
+    background: #faf8f5;
   }
 
-  .modal-sheet {
-    @apply w-full rounded-t-[28px] px-6 pb-10 pt-6;
-    background: var(--bg);
-    animation: slideUp .28s cubic-bezier(.4,0,.2,1);
+  .onboarding-header {
+    @apply flex shrink-0 items-center px-[22px] pb-4 pt-[52px];
+    background: #faf8f5;
   }
 
-  .modal-handle {
-    @apply mx-auto mb-5 h-1 w-9 rounded-[2px];
-    background: var(--border2);
+  .onboarding-progress-row {
+    @apply flex shrink-0 items-center gap-3 px-[22px] py-4;
   }
 
-  .progress-row {
-    @apply mb-5 flex gap-1;
-  }
-
-  .progress-step {
-    @apply h-[3px] flex-1 rounded-[2px];
+  .onboarding-progress {
+    @apply relative h-[4px] flex-1 shrink-0 overflow-hidden rounded-[999px];
     background: var(--border);
   }
 
-  .progress-step.is-done {
-    background: var(--rose);
+  .onboarding-progress-fill {
+    @apply h-full rounded-[999px];
+    background: #c0857a;
+    transition: width .24s ease;
+  }
+
+  .onboarding-progress-label {
+    @apply text-[11px];
+    color: var(--text3);
+  }
+
+  .onboarding-body {
+    @apply flex min-h-0 flex-1 flex-col overflow-hidden;
+  }
+
+  .onboarding-slide-viewport {
+    @apply min-h-0 flex-1 overflow-hidden;
+  }
+
+  .onboarding-slide-track {
+    @apply flex h-full;
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+  }
+
+  .onboarding-step-panel {
+    @apply flex min-h-full w-full shrink-0 flex-col px-6 pb-10 pt-2;
+  }
+
+  .onboarding-step-inner {
+    @apply flex-1;
+  }
+
+  .onboarding-footer {
+    @apply mt-6 pt-4;
+  }
+
+  .onboarding-skip-link {
+    @apply mt-4 w-full border-none bg-transparent py-[10px] text-center text-[12px];
+    color: var(--text3);
+    transition: transform .12s ease, color .15s ease;
   }
 
   .modal-title {
     @apply mb-[5px] text-[22px] font-semibold;
+    color: var(--text);
+    font-family: var(--display);
+  }
+
+  .onboarding-confirmation {
+    @apply flex flex-1 flex-col items-center justify-center px-4 text-center;
+  }
+
+  .onboarding-confirmation-mark {
+    @apply mb-5 h-[56px] w-[56px] rounded-[16px] text-[30px];
+  }
+
+  .onboarding-confirmation-title {
+    @apply text-[28px] font-semibold leading-[1.15] tracking-[-0.02em];
     color: var(--text);
     font-family: var(--display);
   }
@@ -866,22 +949,16 @@
     color: var(--rose2);
   }
 
-  .how-sage-link-card {
-    @apply block rounded-[18px] border px-4 py-[10px] text-center text-[12px];
-    min-width: 164px;
-    background: rgba(255, 252, 248, 0.76);
-    border-color: var(--border);
+  .home-hero-link {
+    @apply mb-4 border-none bg-transparent p-0 text-left text-[12px];
+    color: #c0857a;
+    transition: transform .12s ease, color .15s ease;
+  }
+
+  .home-info-button {
+    @apply flex h-[18px] w-[18px] items-center justify-center rounded-full border-none bg-transparent p-0;
     color: var(--text3);
-    transition: transform .12s ease, background-color .15s ease, border-color .15s ease, color .15s ease;
-  }
-
-  .home-secondary-link-wrap {
-    @apply pointer-events-none absolute inset-x-0 z-[120] flex justify-center px-[22px];
-    bottom: 92px;
-  }
-
-  .home-secondary-link-wrap .how-sage-link-card {
-    @apply pointer-events-auto;
+    transition: transform .12s ease, color .15s ease;
   }
 
   .how-sage-topbar {
@@ -960,6 +1037,8 @@
   }
 
   .profile-avatar-button:active,
+  .home-hero-link:active,
+  .home-info-button:active,
   .icon-action-button:active,
   .nav-item:active,
   .searchbar-submit:active,
@@ -974,10 +1053,10 @@
   .export-button:active,
   .onboarding-option:active,
   .onboarding-choice-pill:active,
-  .how-sage-link-card:active,
   .btn-primary:active,
   .btn-ghost:active,
   .btn-text:active,
+  .onboarding-skip-link:active,
   .back-link:active {
     transform: scale(0.98);
   }
@@ -1013,7 +1092,7 @@
     box-shadow: 0 32px 80px rgba(0,0,0,.22), 0 0 0 1.5px rgba(0,0,0,.1);
   }
 
-  .modal-backdrop {
+  .onboarding-screen {
     border-radius: 48px;
     overflow: hidden;
   }
